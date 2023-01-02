@@ -55,10 +55,10 @@ django-admin startproject store .
 ```
 
 The files that are created are the core of our application: 
-- settings.py -> contains the application settings
-- \_\_init\_\_.py -> defines the directory as a package
-- urls.py -> contains the urls inside the application 
-- wsgi.py and asgi.py -> used for deployment 
+- `settings.py` -> contains the application settings
+- `\_\_init\_\_.py` -> defines the directory as a package
+- `urls.py` -> contains the urls inside the application 
+- `wsgi.py` and asgi.py -> used for deployment 
 
 We have manage.py to manage other settings and servers in our application
 

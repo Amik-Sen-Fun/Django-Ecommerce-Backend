@@ -108,3 +108,24 @@ def say_hello(request):
   return HttpResponse('Hello world')
 ```
 
+Now if we wanna map urls to our views we need to do the following steps:
+- Inside the `sandbox` folder, define a file named `urls.py` and write the following:
+  ```python
+  from django.urls import path
+  from . import views
+  
+  urlpatterns = [
+    path('hello/', views.say_hello)
+  ]
+  ```
+- Now we need to include these urls with the main application urls, this is done by going in the `store` folder and writing the following commands in `urls.py` (store):
+  ```python 
+  from django.contrib import admin
+  from django.urls import path, include
+
+  urlpatterns = [
+      path('admin/', admin.site.urls),
+      path('sandbox/', include('sandbox.urls')),
+  ]
+  
+  ```

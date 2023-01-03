@@ -224,3 +224,8 @@ class Product(models.Model):
     last_update = models.DateTimeField(auto_now=True) # To update everytime
     # use auto_now_add -> to only update when the object is created for the first time
 ```
+
+- Important concepts and applications
+  - Choice fields : See `Customer` models in `shop`
+  - Defining one-to-one relationships: See `Address` model in `shop`
+  - Defining one-to-many relationships: See 

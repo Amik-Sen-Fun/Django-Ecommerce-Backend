@@ -170,3 +170,57 @@ def say_hello(request):
   Then mention it in the `settings.py` file of the project as `debug_toolbar`, put in the `urls.py` and in `MIDDLEWARE` and `INTERNAL_IPS` in `settings.py` file as mentioned in the docs and this code
 
 > Django Debug Toolbar is really cool :p
+
+## Making the E-commerce Data model
+
+First we will define models like Product, categories and define relationships between them
+
+There are many kinds of relationships possible between entities such as:
+
+- One to One
+- Many to Many
+- One to Many
+
+For the product and category, A category can have many products so it's a many to one relationship.
+
+> Note: In Django IDs are automatically created
+> Always make models based on the requirements
+
+Now in order to make scalable application it is a good practice to make each component as an application.
+
+For our application we can have an application and define model inside it such as product, category, cart, order, custormers etc. ( This is known as a Monolith, making it hard to make changes and understand ) but in order to make a scalable product we define seperate applications such as:
+
+- Product
+  - Models: Item, Category, Tag
+- Customer
+  - Models: Customer
+- Carts
+  - Models: Cart, CartItem
+- Orders
+  - Models: Order, OrderItem
+
+However, any change in the Product will mean changes in the Carts and Orders as they are related, so breaking a big application into too many small applications is also a headache.
+
+So, we will go for a middle ground. Only Tags is an independent module. So, we will make it as a seperate application. This way we are ensuring
+
+- Zero coupling
+- Self containtment
+
+Hence proceeding with two application `shop` and `tags`.
+
+Inside `shop` now we will define models, refer the code for that. One example is given below as the `Product` model:
+
+```python
+from django.db import models
+
+# Create your models here.
+
+# Defining the Product class which will be used to create object
+class Product(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    inventory = models.IntegerField()
+    last_update = models.DateTimeField(auto_now=True) # To update everytime
+    # use auto_now_add -> to only update when the object is created for the first time
+```

@@ -227,5 +227,7 @@ class Product(models.Model):
 
 - Important concepts and applications
   - Choice fields : See `Customer` models in `shop`
-  - Defining one-to-one relationships: See `Address` model in `shop`
-  - Defining one-to-many relationships: See 
+  - Defining **one-to-one** relationships: See `Address` model in `shop` (models.OneToOneField())
+  - Defining **one-to-many** relationships: See `Address` model in `shop` (models.ForeignKey())
+  - Defining **many-to-many** relationships: See `Promotions` and `Products` model in `shop` (models.ManyToManyField())
+  - Defining **circular dependency**:

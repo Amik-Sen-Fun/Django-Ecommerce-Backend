@@ -85,7 +85,7 @@ Inside each django project we can create multiple applications. Some of the pred
 - `django.contrib.messages` : Provides one time messages for the users
 - `django.contrib.sessions` : Sessions application used to store session info in server. It is not used now (JWT can be used)
 - `django.contrib.auth` : This is the authentication module provided by Django
-- `django.contrib.contenttypes` :
+- `django.contrib.contenttypes` : Used to create generic relationship in our models. (Refer models of Tags)
 - `django.contrib.staticfiles` : Used to serve static files like images, pdfs, videos etc
 
 To make create your own application, write :
@@ -225,9 +225,31 @@ class Product(models.Model):
     # use auto_now_add -> to only update when the object is created for the first time
 ```
 
-- Important concepts and applications
+- Important concepts and applications (Read comments)
   - Choice fields : See `Customer` models in `shop`
   - Defining **one-to-one** relationships: See `Address` model in `shop` (models.OneToOneField())
   - Defining **one-to-many** relationships: See `Address` model in `shop` (models.ForeignKey())
   - Defining **many-to-many** relationships: See `Promotions` and `Products` model in `shop` (models.ManyToManyField())
-  - Defining **circular dependency**:
+  - Defining **circular dependency** : To give the `featured_products` see `collection` model in `shop`
+  - **Generic Relationships** : Models in `tags` application
+
+## Migrations
+
+- To save a new model or save changes in existing models do
+
+  ```python
+  python manage.py makemigrations
+  ```
+
+> If you have made changes in a model and the above command shows no changes detected => make sure you written app in **INSTALLED_APPS** in `settings.py`
+
+> NOTE: Slug is a search engine optimisation technique
+
+- To reflect changes in DB do,
+  ```python
+  python manage.py migrate
+  ```
+- To reflect changes in DB and see the SQL codes do,
+  ```python
+  python manage.py sqlmigrate store 0003
+  ```

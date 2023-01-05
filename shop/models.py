@@ -6,6 +6,16 @@ from django.db import models
 class Collection(models.Model):
     title = models.CharField(max_length=255)
 
+    # This is a circular dependency between collection and Product
+    featured_products = models.ForeignKey('Product', on_delete = models.SET_NULL, null = True, related_name='+')
+    # Circular dependency issues
+    """ 
+    Product is in '' because it is defined later, however this should be avaoided as 
+    One need to make changes everywhere, also while doing this we will get a name error due to 
+    some reverse relation formation by django, so we need the related_name = '+' for stoping this process
+    """
+
+
 
 class Promotions(models.Model):
     description = models.CharField(max_length=255)

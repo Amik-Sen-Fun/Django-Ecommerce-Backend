@@ -63,7 +63,13 @@ class Customer(models.Model):
     # Choice feild
     membership = models.CharField(choices=MEMBERSHIP_CHOICES, default= REGULAR_MEMBER, max_length=1)
     
-    
+    # Meta data class
+    class Meta:
+        db_table = 'store_customers'
+        # VERBOSE is also some META field, see documentation
+        indexes = [
+            models.Index(fields = ['last_name', 'first_name'] )
+        ]
    
 
 # The order class to define an order

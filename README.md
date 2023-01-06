@@ -352,4 +352,18 @@ DATABASES = {
       ]
 
   ```
-> For Generating Dummy Data we can use `mockaroo.com`
+
+  > For Generating Dummy Data we can use `mockaroo.com`
+
+## Django ORM (Object Relational Mapper)
+
+ORMs are used to map SQL queries to objects. So that we don't need to write many SQL codes. They don't do good with complex queries though. 
+
+- Demerits of ORM :
+
+  - A bit slow than raw SQL queries
+
+- Merits of ORM :
+  - We need to less code which requires less maintenance, and hence cost less money
+
+## Managers and querysets 

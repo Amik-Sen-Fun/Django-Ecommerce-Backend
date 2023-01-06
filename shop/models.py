@@ -28,6 +28,7 @@ class Product(models.Model):
     # sku = models.CharField(max_length= 10, primary_key = True)
     title = models.CharField(max_length=255)
     description = models.TextField()
+    slug = models.SlugField(default='-')
     price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True) # To update everytime
@@ -45,13 +46,15 @@ class Product(models.Model):
 
 # THE CUSTOMER  model to define the customer object
 class Customer(models.Model):
-    PRIME_MEMBER = 'P'
-    REGULAR_MEMBER = 'R'
+    SILVER_MEMBER = 'S'
+    BRONZE_MEMBER = 'B'
+    GOLD_MEMBER = 'G'
 
     # Choice Filed options
     MEMBERSHIP_CHOICES = [
-        (PRIME_MEMBER,'Prime'),
-        (REGULAR_MEMBER, 'Regular')
+        (SILVER_MEMBER,'Silver'),
+        (GOLD_MEMBER, 'Gold'),
+        (BRONZE_MEMBER, 'Bronze'), 
     ]
 
     first_name = models.CharField(max_length=100)
@@ -61,11 +64,11 @@ class Customer(models.Model):
     birth_date = models.DateTimeField(null=True)
 
     # Choice feild
-    membership = models.CharField(choices=MEMBERSHIP_CHOICES, default= REGULAR_MEMBER, max_length=1)
+    membership = models.CharField(choices=MEMBERSHIP_CHOICES, default= BRONZE_MEMBER, max_length=1)
     
     # Meta data class
     class Meta:
-        db_table = 'store_customers'
+        db_table = 'shop_customers'
         # VERBOSE is also some META field, see documentation
         indexes = [
             models.Index(fields = ['last_name', 'first_name'] )

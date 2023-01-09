@@ -1,0 +1,18 @@
+<html>
+    <body>
+        {% if name %}
+        <h1>Hello {{ name }}</h1>
+
+        {% else %}
+        <h1>Hello World</h1>
+
+        {% endif %}
+
+        <h1>Printing the Product details that have prices between 20 to 30: </h1>
+        <ul>
+            {% for p in product %}
+            <li>{{ p.title}} - {{ p.prices}}</li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

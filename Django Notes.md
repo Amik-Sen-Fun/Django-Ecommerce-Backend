@@ -357,7 +357,7 @@ DATABASES = {
 
 ## Django ORM (Object Relational Mapper)
 
-ORMs are used to map SQL queries to objects. So that we don't need to write many SQL codes. They don't do good with complex queries though. 
+ORMs are used to map SQL queries to objects. So that we don't need to write many SQL codes. They don't do good with complex queries though.
 
 - Demerits of ORM :
 
@@ -366,4 +366,101 @@ ORMs are used to map SQL queries to objects. So that we don't need to write many
 - Merits of ORM :
   - We need to less code which requires less maintenance, and hence cost less money
 
-## Managers and querysets 
+## Managers and querysets
+
+Say Product is a class defined in models.py then consider the following:
+
+- If we do `Product.objects` it returns a _manager instance_ which is used to fetch data from the database
+
+- Some basic query syntax:
+  |Syntax|Function|
+  |---|---|
+  |`Product.object.all()`|fetches all data from table Product|
+  |`Product.object.get()`|for getting a single object (doesn't return a query set)|
+  |`Product.object.filter()`|used to get filtered data|
+  |`Product.object.order_by()`|used to rearrange the data|
+
+- But these functions return a **query set**, Django fetches the actual data when we do some operation on this query set, like :
+
+  - _itterate over it_
+  - _convert it to a list_
+  - _slicing the query set_
+    This is known as _lazy_ feature of Django, which is done so that we can process complex queries.
+
+- Some manager commands don't return a query set like _count()_ function, because it is a number, no further complex query can be executed here.
+
+### Retriving Objects in Django ORM
+
+- `Product.object.all()` is used to retrieve all objects from the database.
+- `Product.object.get(id=1)` is used to get a single object with id = 1
+- `Product.object.get(pk=1)` is used to get a single object having the primary key = 1
+
+With the `get()` filter if we don't get any value the application will throw an exception. For this we will use the try and except block as:
+
+```python
+from django.core.exceptions import ObjectDoesNotExist
+
+try:
+  product = Product.object.get(id=1)
+except ObjectDoesNotExist:
+  pass
+```
+
+or we can remove the try and catch exception by
+
+```python
+product = Product.object.filter(id=1).first()
+# This will store None in product if nothing is present
+# Or we can write
+if Product.object.filter(id=1).exists():
+  pass
+# exists() returns a boolean value
+```
+
+### Filtering Objects in Django ORM
+
+The `filter()` method takes in a keyword value and filters data accordingly:
+
+- `Product.object.filter(unit_price = 20)` - Returns a query set with object having `unit_price` = 20
+
+> However in the `filter()` method we cannot use logical operators like <,>, or =
+
+For logical comparison we need to write syntax as:
+
+- `Product.object.filter(unit_price__gt = 20)` - Returns a query set with object having `unit_price` > 20
+
+> For other such `lookups` google them
+
+- We can also filter cross relational data by :
+  `Product.object.filter(collection__id__gt = 20)` - Returns a query set with object having `collection` with `id` greater than 20.
+
+- To filter using string we write as follows:
+
+  - `Product.object.filter(title__contains = 'coffee')` - Returns a query set with object having title containing `coffee` and this is case sensitive. To make this case insensitive use `__icontains()`
+  - `Product.object.filter(title__startswith = 'coffee')`
+  - `Product.object.filter(title__endswith = 'coffee')`
+
+- To filter using dates we write as follows:
+
+  - `Product.object.filter(last_update__year = 2010)`
+
+- To check null values:
+  - `Product.object.filter(description__isnull = True)`
+
+### Complex lookups using query objects
+
+- We wanna lookup _products having inventory < 10 AND price >20_, we can achieve this by:
+
+  - `Product.object.filter(inventory__lt = 10, price__gt = 20)` - uses an AND SQL command
+  - `Product.object.filter(inventory__lt = 10).filter(price__gt = 20)` - same as before
+
+- We wanna lookup _products having inventory < 10 OR price >20_, for this we need to import `Q`:
+
+  ```python
+  from django.db.models import Q
+
+  products = Product.object.filter(Q(inventory__lt = 10)| Q(price__gt = 20))
+
+  # For AND in Q operator use &
+  # For NOT in Q operator use ~
+  ```

@@ -447,7 +447,7 @@ For logical comparison we need to write syntax as:
 - To check null values:
   - `Product.object.filter(description__isnull = True)`
 
-### Complex lookups using query objects
+### Complex lookups using Q objects
 
 - We wanna lookup _products having inventory < 10 AND price >20_, we can achieve this by:
 
@@ -464,3 +464,39 @@ For logical comparison we need to write syntax as:
   # For AND in Q operator use &
   # For NOT in Q operator use ~
   ```
+
+### Referencing using F objects
+
+- Say we need to find Product such that Inventory = Price
+
+  ```python
+  from django.db.models import F
+
+  products = Product.object.filter(inventory=F('price'))
+
+  # Adds a WHERE clause
+  products = Product.object.filter(inventory=F('price__id'))
+  # used to compare inventory with price id
+  ```
+
+### Sorting Data
+
+- To sort all the `Products` by their `title` we query as: `products = Product.object.order_by('title')`
+- For descenidng order do : `products = Product.object.order_by('-title')`
+- We can use multiple fields as well
+  `products = Product.object.order_by('price','-title')` : Sorts the data in _Ascending_ order of unit `price`, if price is same then orders by _Descending_ order of `title`.
+- We can reverse this order by using `reverse` keyword.
+  `products = Product.object.order_by('price','-title').reverse()` : Sorts the data in _Descending_ order of unit `price`, if price is same then orders by _Ascending_ order of `title`.
+- We can use `order_by` after `filter` as well because it is also a query set operation
+- `products = Product.object.earliest('price')` is same as `products = Product.object.order_by('price')[0]`: Returns the first product details with `price` arranged in _Ascending_ order.
+- `products = Product.object.latest('price')` is same as `products = Product.object.order_by('-price')[0]` : Returns the first product details with `price` arranged in _Descending_ order.
+- For more refer to `QuerySet API documentation`.
+
+### Limiting Results
+
+- `Product.object.all()[:5]`: prints products at index 0,1,2,3,4. Uses SQL _LIMIT_ clause
+- `Product.object.all()[5:10]`: prints products at index 5,6,7,8,9. Uses SQL _LIMIT_ clause with _OFFSET_ clause.
+
+### Selecting Fields to Query
+
+-

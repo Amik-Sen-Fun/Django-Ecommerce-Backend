@@ -13,3 +13,7 @@ def html_hello(request):
 def query_list(request):
     query_set = Product.objects.filter(price__range=(20,30))
     return render(request, 'query_list.html', {'product': list(query_set)})
+
+def related_list(request):
+    query_set = Product.objects.select_related('collection').all()
+    return render(request, 'related.html', {'products': list(query_set), 'user': 'Amik'})

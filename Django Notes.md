@@ -506,4 +506,30 @@ For logical comparison we need to write syntax as:
 
 ### Selecting Fields to Query
 
--
+- `products = Product.object.values('id','title','price')` : used to fetch a query set _dictionary_ of data containing only the `id`, `title` and `price` feilds.
+
+- `products = Product.object.values('id','title','price', 'collection__title')` : used to fetch a query set _dictionary_ of data containing only the `id`, `title`,`price` and `collection.title` feilds by performing an _Inner Join_ between the `Collection` and `Product` tables on the `ids`.
+
+- `products = Product.object.values_list('id','title','price')` : used to fetch a query set _tuple_ of data containing only the `id`, `title` and `price` feilds. Example: `(2,ABC,10)`
+
+- `product_prices = Product.object.values_list('price').distinct()` : used to get a query set of unique data points.
+  To select all the `Products` with `price` in the `product_prices` use the command:
+  `products = Product.object.filter(price__in = product_prices)`
+
+### Deffering Fields
+
+- `only()` and `defer()` are used for deffering. BUT MUST BE USED WITH CAUTION else app will hang and make LOTS OF QUERIES
+
+### Selecting Related Object
+
+- If we make try to access objects of a different related class in HTML for loop, through query set, our application will make repeated calls to the database and hang. To solve this we **preload the class data**, in Django using the following method:
+  `products = Product.object.select_related('collection').all()`
+  we can also query as: `products = Product.object.select_related('collection__title').all()` and so on. . .
+
+> `select_related()` is used we have only one object. For `n` object we use `prefetch_related()`
+
+- `products = Product.object.prefetch_related('promotions').all()`
+
+`select_related()` and `prefetch_related()` return query sets so these two can be clubbed as well, as per need.
+
+> The revered relationship in a `ForeignKey` is named automatically by Django as `AssociatedClassName_set`

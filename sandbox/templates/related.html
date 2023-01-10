@@ -1,0 +1,18 @@
+<html>
+    <body>
+        {% if user %}
+        <h1>Hello {{ user }}</h1>
+
+        {% else %}
+        <h1>Hello World</h1>
+
+        {% endif %}
+
+        <h1>Printing the Product details by preloding collections: </h1>
+        <ul>
+            {% for p in products %}
+            <li>{{ p.title}} - {{ p.collection.title}}</li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

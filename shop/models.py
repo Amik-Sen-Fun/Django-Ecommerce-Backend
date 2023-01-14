@@ -14,6 +14,12 @@ class Collection(models.Model):
     One need to make changes everywhere, also while doing this we will get a name error due to 
     some reverse relation formation by django, so we need the related_name = '+' for stoping this process
     """
+    # To change column names in admin 
+    def __str__(self) -> str:
+        return self.title
+    # To change the oredering and stuff in the Admin panel 
+    class Meta:
+        ordering = ['title']
 
 
 
@@ -41,6 +47,13 @@ class Product(models.Model):
     promotions = models.ManyToManyField(Promotions, related_name="products")
     # In many-to-many relationship Django will create a filed in Promotions as well to store product set
     # This field name can be changed using `related_name`
+    
+    # To change column names in admin 
+    def __str__(self) -> str:
+        return self.title
+    # To change the oredering and stuff in the Admin panel 
+    class Meta:
+        ordering = ['title']
 
 
 

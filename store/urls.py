@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# Admin panel customisation 
+admin.site.site_header = 'Store Admin Portal' # Changes the main Title header
+admin.site.index_title = 'Hello Admin!' # Changes the index title seen below the header
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('playground/', include('sandbox.urls')),

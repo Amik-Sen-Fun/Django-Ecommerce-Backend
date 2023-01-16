@@ -73,10 +73,13 @@ class OrderAdmin(admin.ModelAdmin):
     list_select_related = ['customer']
     list_display = ['id', 'customer_name','placed_at','payment_status' ]
     ordering = ['placed_at']
+    autocomplete_fields = ['customer']
 
     @admin.display(ordering='customer.first_name') # for sorting order in Admin Panel
     def customer_name(self,order):
         return order.customer.first_name+" "+order.customer.last_name
+
+    
 
 
 # The collection admin page setting to showcase how to 

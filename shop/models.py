@@ -78,6 +78,10 @@ class Customer(models.Model):
 
     # Choice feild
     membership = models.CharField(choices=MEMBERSHIP_CHOICES, default= BRONZE_MEMBER, max_length=1)
+
+    # To change column names in admin 
+    def __str__(self) -> str:
+        return self.first_name + ' ' + self.last_name
     
     # Meta data class
     class Meta:

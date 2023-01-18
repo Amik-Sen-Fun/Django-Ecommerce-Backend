@@ -33,6 +33,7 @@ class ProductAdmin(admin.ModelAdmin):
     # similar to select_related, just in admin panel
     list_select_related = ['collection']
     list_filter = ['collection', 'last_update', InventoryFilter]
+    search_fields = ['title']
 
     # We cannot directly access the collection id as Collection will return it's string representation 
     # Which is title in our case, so we have to define an seperate method
@@ -67,13 +68,25 @@ class CustomerAdmin(admin.ModelAdmin):
     # search_fields = ['first_name__istartswith', 'last_name__istartswith'] # Case insensitive
 
 
+# Inline defination
+class OrderItemsInline(admin.TabularInline):
+    # This inherently, contains all fileds of ModelAdmin
+    autocomplete_fields = ['products']
+    model = models.OrderItems   
+    # By default the number of extra entries is 3
+    # To increase that do:
+    extra = 4
+
+
 # Registering the Orders column in Admin Portal
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['customer']
     list_select_related = ['customer']
+    inlines = [OrderItemsInline]
     list_display = ['id', 'customer_name','placed_at','payment_status' ]
     ordering = ['placed_at']
-    autocomplete_fields = ['customer']
+    
 
     @admin.display(ordering='customer.first_name') # for sorting order in Admin Panel
     def customer_name(self,order):
